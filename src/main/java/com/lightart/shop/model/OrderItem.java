@@ -1,5 +1,6 @@
 package com.lightart.shop.model;
 
+import com.sun.istack.NotNull;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -7,37 +8,66 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
-@Table
-public class Order implements Serializable {
+@Table(name = "orders_table")
+public class OrderItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotNull
     @Column(name = "name", nullable = false)
     private String name;
+    @NotNull
     @Column(name = "address", nullable = false)
     private String address;
+    @NotNull
     @Column(name = "phone", nullable = false)
-    private String phoneNumber;
+    private String phone;
+    @NotNull
     @Column(name = "email", nullable = false)
     private String email;
+    @NotNull
     @Column(name = "item", nullable = false)
     private String item;
+    @NotNull
     @Column(name = "count", nullable = false)
-    private String count;
+    private Long count;
+    @Column(name = "comment")
+    private String comment;
+    @NotNull
     @CreationTimestamp
     @Column(name = "created", nullable = false)
     private Timestamp created;
 
-    public Order() {
+    public OrderItem() {
     }
 
-    public Order(String name, String address, String phoneNumber, String email, String item, String count) {
+    public OrderItem(Long id, String name, String address, String phone, String email, String item, Long count) {
+        this.id = id;
         this.name = name;
         this.address = address;
-        this.phoneNumber = phoneNumber;
+        this.phone = phone;
         this.email = email;
         this.item = item;
         this.count = count;
+    }
+
+    public OrderItem(String name, String address, String phoneNumber, String email, String item, Long count) {
+        this.name = name;
+        this.address = address;
+        this.phone = phoneNumber;
+        this.email = email;
+        this.item = item;
+        this.count = count;
+    }
+
+    public OrderItem(String name, String address, String phoneNumber, String email, String item, Long count, String comment) {
+        this.name = name;
+        this.address = address;
+        this.phone = phoneNumber;
+        this.email = email;
+        this.item = item;
+        this.count = count;
+        this.comment = comment;
     }
 
     public Long getId() {
@@ -64,12 +94,12 @@ public class Order implements Serializable {
         this.address = address;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     public String getEmail() {
@@ -88,12 +118,20 @@ public class Order implements Serializable {
         this.item = item;
     }
 
-    public String getCount() {
+    public Long getCount() {
         return count;
     }
 
-    public void setCount(String count) {
+    public void setCount(Long count) {
         this.count = count;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Timestamp getCreated() {

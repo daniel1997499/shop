@@ -12,13 +12,20 @@
 </head>
 <body>
 
+<div th:if="${errors}" th:text="errors"></div>
+
 <div class="container p-3 bg-light rounded shadow">
   <div class="mt-3">
-    <div class="list-group">
-      <h3 class="text-center" th:text="#{welcome-message}"/>
-      <a class="shadow-sm btn btn-outline-info mt-3" href="#">Placeholder</a>
-    </div>
+    <h3 class="text-center" th:text="#{welcome-message}"></h3>
   </div>
+</div>
+
+<div class="container mb-5">
+  <h2>Orders list</h2>
+  <ul class="list-group">
+    <li th:if="${orders != null}" th:each="orderItem : ${orders}" th:text="*{orderItem?.name} + ' ' + *{orderItem?.phone}" class="list-group-item"></li>
+    <li th:if="${orders == null || orders.isEmpty()}" class="list-group-item" th:text="#{placeholder}"></li>
+  </ul>
 </div>
 
 </body>

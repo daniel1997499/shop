@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Main Page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!--    <link rel="stylesheet" href="mystyle.css">-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container mb-5">
+    <form method="post" th:action="@{/createorder}" th:object="${orderItem}">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" th:field="*{name}" class="form-control" id="name" th:placeholder="#{placeholder}" maxlength="30" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Address:</label>
+            <input type="text" th:field="*{address}" class="form-control" id="address" th:placeholder="#{placeholder}" maxlength="30" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Phone:</label>
+            <input type="text" th:field="*{phone}" class="form-control" id="phone" th:placeholder="#{placeholder}" maxlength="30" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Email:</label>
+            <input type="text" th:field="*{email}" class="form-control" id="email" th:placeholder="#{placeholder}" maxlength="30" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Item:</label>
+            <input type="text" th:field="*{item}" class="form-control" id="item" th:placeholder="#{placeholder}" maxlength="30" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Count:</label>
+            <input type="number" th:field="*{count}" class="form-control" id="count" th:placeholder="#{placeholder}" maxlength="30" required>
+        </div>
+        <div class="form-group">
+            <label for="address">Comment:</label>
+            <input type="text" th:field="*{comment}" class="form-control" id="comment" th:placeholder="#{placeholder}" maxlength="50">
+        </div>
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+</div>
+
+</body>
+</html>
