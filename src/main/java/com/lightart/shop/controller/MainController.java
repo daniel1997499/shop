@@ -2,14 +2,13 @@ package com.lightart.shop.controller;
 
 import com.lightart.shop.model.OrderItem;
 import com.lightart.shop.service.OrderService;
+import org.hibernate.ObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping({"/", "/index", "/home"})
@@ -38,6 +37,17 @@ public class MainController {
         }
         catch (NullPointerException ne) {
             log.error(String.valueOf(ne));
+        }
+        return "redirect:/";
+    }
+
+    @RequestMapping(value = "/deleteorder/{id}", method = RequestMethod.POST)
+    public String deleteOrder(@PathVariable Long id) {
+        try {
+            orderService.deleteOrder(id);
+        }
+        catch (ObjectNotFoundException onfe) {
+            log.error(String.valueOf(onfe));
         }
         return "redirect:/";
     }

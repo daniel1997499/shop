@@ -2,6 +2,7 @@ package com.lightart.shop.service;
 
 import com.lightart.shop.model.OrderItem;
 import com.lightart.shop.repository.OrderRepository;
+import org.hibernate.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,5 +22,12 @@ public class OrderService {
             orderRepository.save(order);
         else
             throw new NullPointerException("Null value found, expected not null");
+    }
+
+    public void deleteOrder(Long id) {
+        if (orderRepository.findById(id).isPresent())
+            orderRepository.deleteById(id);
+        else
+            throw new ObjectNotFoundException("no object with id: " + id, "null name");
     }
 }

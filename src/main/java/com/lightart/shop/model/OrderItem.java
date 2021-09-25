@@ -33,6 +33,8 @@ public class OrderItem implements Serializable {
     private Long count;
     @Column(name = "comment")
     private String comment;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
     @NotNull
     @CreationTimestamp
     @Column(name = "created", nullable = false)
@@ -140,5 +142,20 @@ public class OrderItem implements Serializable {
 
     public void setCreated(Timestamp created) {
         this.created = created;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", phone='" + phone + '\'' +
+                ", email='" + email + '\'' +
+                ", item='" + item + '\'' +
+                ", count=" + count +
+                ", comment='" + comment + '\'' +
+                ", created=" + created +
+                '}';
     }
 }

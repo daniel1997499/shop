@@ -12,20 +12,54 @@
 </head>
 <body>
 
-<div th:if="${errors}" th:text="errors"></div>
-
-<div class="container p-3 bg-light rounded shadow">
-  <div class="mt-3">
-    <h3 class="text-center" th:text="#{welcome-message}"></h3>
+<div class="container-fluid border my-5">
+  <div class="bg-light rounded shadow p-3">
+    <h3 class="text-center" th:text="#{welcomeMessage}"></h3>
   </div>
 </div>
 
-<div class="container mb-5">
-  <h2>Orders list</h2>
-  <ul class="list-group">
-    <li th:if="${orders != null}" th:each="orderItem : ${orders}" th:text="*{orderItem?.name} + ' ' + *{orderItem?.phone}" class="list-group-item"></li>
-    <li th:if="${orders == null || orders.isEmpty()}" class="list-group-item" th:text="#{placeholder}"></li>
+<div class="container-fluid border my-5">
+  <ul class="nav nav-pills nav-justified p-2">
+    <li class="nav-item m-1"><a class="nav-link btn btn-sm btn-info" href="/createorder" th:text="#{createOrder}"></a></li>
+    <li class="nav-item m-1"><a class="nav-link btn btn-sm btn-info" href="#" th:text="#{placeholder}"></a></li>
+    <li class="nav-item m-1"><a class="nav-link btn btn-sm btn-info" href="#" th:text="#{placeholder}"></a></li>
+    <li class="nav-item m-1"><a class="nav-link btn btn-sm btn-info" href="#" th:text="#{placeholder}"></a></li>
+    <li class="nav-item m-1"><a class="nav-link btn btn-sm btn-info" href="#" th:text="#{placeholder}"></a></li>
   </ul>
+</div>
+
+<div class="container-fluid border my-5">
+  <h2>Orders table</h2>
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped table-hover">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Phone</th>
+        <th>Email</th>
+        <th>Item</th>
+        <th>Count</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="orderItem : ${orders}">
+        <td th:text="*{orderItem?.name}"></td>
+        <td th:text="*{orderItem?.address}"></td>
+        <td th:text="*{orderItem?.phone}"></td>
+        <td th:text="*{orderItem?.email}"></td>
+        <td th:text="*{orderItem?.item}"></td>
+        <td th:text="*{orderItem?.count}"></td>
+        <td>
+          <form th:action="@{'/deleteorder/{id}' (id=${orderItem?.id})}" th:method="post">
+            <button class="btn btn-danger" type="submit" >Delete Order</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 </body>
