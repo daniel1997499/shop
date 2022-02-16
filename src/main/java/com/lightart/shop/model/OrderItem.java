@@ -1,6 +1,6 @@
 package com.lightart.shop.model;
 
-import com.sun.istack.NotNull;
+import com.lightart.shop.util.OrderStatuses;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -8,36 +8,29 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "orders_table")
+@Table(name = "orders")
 public class OrderItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
-    @NotNull
-    @Column(name = "address", nullable = false)
+    @Column(name = "address")
     private String address;
-    @NotNull
-    @Column(name = "phone", nullable = false)
+    @Column(name = "phone")
     private String phone;
-    @NotNull
-    @Column(name = "email", nullable = false)
+    @Column(name = "email")
     private String email;
-    @NotNull
-    @Column(name = "item", nullable = false)
+    @Column(name = "item")
     private String item;
-    @NotNull
-    @Column(name = "count", nullable = false)
+    @Column(name = "count")
     private Long count;
     @Column(name = "comment")
     private String comment;
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
-    @NotNull
+    private OrderStatuses status;
     @CreationTimestamp
-    @Column(name = "created", nullable = false)
+    @Column(name = "created")
     private Timestamp created;
 
     public OrderItem() {

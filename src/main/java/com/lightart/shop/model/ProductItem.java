@@ -1,30 +1,23 @@
 package com.lightart.shop.model;
 
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "products_table")
+@Table(name = "products")
 public class ProductItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @NotNull
-    @Column(name = "title", nullable = false)
+    @Column(name = "title")
     private String title;
-    @NotNull
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
     @Column(name = "price")
     private BigDecimal price;
     @Column(name = "pictureUrl")
     private String pictureUrl;
-    @Lob
-    @Column(name="product_picture")
-    private byte[] productPic;
 
     public ProductItem() {
     }
@@ -39,14 +32,6 @@ public class ProductItem implements Serializable {
         this.description = description;
         this.price = price;
         this.pictureUrl = pictureUrl;
-    }
-
-    public ProductItem(String title, String description, BigDecimal price, String pictureUrl, byte[] productPic) {
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.pictureUrl = pictureUrl;
-        this.productPic = productPic;
     }
 
     public Long getId() {
@@ -87,14 +72,6 @@ public class ProductItem implements Serializable {
 
     public void setPictureUrl(String pictureUrl) {
         this.pictureUrl = pictureUrl;
-    }
-
-    public byte[] getProductPic() {
-        return productPic;
-    }
-
-    public void setProductPic(byte[] productPic) {
-        this.productPic = productPic;
     }
 
     @Override
