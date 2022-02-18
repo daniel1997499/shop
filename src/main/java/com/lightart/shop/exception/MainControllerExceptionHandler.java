@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
+import java.util.logging.Logger;
 
 @ControllerAdvice
 public class MainControllerExceptionHandler {
@@ -19,7 +20,7 @@ public class MainControllerExceptionHandler {
                 new ErrorMessage(HttpStatus.NOT_FOUND.value(),
                 new Date(),
                 ex.getMessage(),
-                request.getDescription(true)), HttpStatus.NOT_FOUND);
+                request.getDescription(false)), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
@@ -29,6 +30,6 @@ public class MainControllerExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 new Date(),
                 ex.getMessage(),
-                request.getDescription(true)), HttpStatus.INTERNAL_SERVER_ERROR);
+                request.getDescription(false)), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

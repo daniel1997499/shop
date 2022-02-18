@@ -21,27 +21,25 @@ public class MainController {
     ProductItemRepository productRepo;
 
     @GetMapping("/get/products")
-    public ResponseEntity<List<ProductItem>> getAllProductItems(@RequestParam(required = false) String title) {
-        try {
-            List<ProductItem> products = new ArrayList<>();
-            if (title == null)
-                products.addAll(productRepo.findAll());
-            else
-                products.addAll(productRepo.findProductByTitle(title));
-            if (products.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(products, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<List<ProductItem>> getAllProductItems() {
+        List<ProductItem> results = new ArrayList<>(productRepo.findAll());
+        if (!results.isEmpty()) {
+            return new ResponseEntity<>(results, HttpStatus.OK);
         }
+
+        throw new ResourceNotFoundException("Resources not found");
     }
 
     @GetMapping("/get/product/{id}")
-    public ResponseEntity<ProductItem> getProductById(@PathVariable("id") long paramId) {
-        ProductItem product = productRepo.findById(paramId)
-                .orElseThrow(() -> new ResourceNotFoundException(paramId));
-        return new ResponseEntity<>(product, HttpStatus.OK);
+    public ResponseEntity<ProductItem> getProductItemById(@PathVariable("id") Long id) {
+        ProductItem result;
+        if (id != null && id > 0L) {
+            result = productRepo.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Resource with id: " + id + " could not be found"));
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+
+        throw new ResourceNotFoundException("Resource 'id' needs to be specified");
     }
 
     @GetMapping("/get/exception")
@@ -50,53 +48,69 @@ public class MainController {
     }
 
     @GetMapping("/get/resourcenotfoundexception")
-    public ResponseEntity<ResourceNotFoundException> getError() throws Exception {
+    public ResponseEntity<ResourceNotFoundException> getResourceNotFoundException() {
         throw new ResourceNotFoundException("Yep, this is a resourcenotfoundexception kinda");
     }
 
     @PostMapping("/post/product")
     public ResponseEntity<ProductItem> createProduct(@RequestBody ProductItem product) {
-        try {
-            ProductItem result = productRepo.save(new ProductItem(product.getTitle(), product.getDescription()));
-            return new ResponseEntity<>(result, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        ProductItem productDTO = new ProductItem();
+        if (product.getId() != null)
+            productDTO.setId(null);
+        if (product.getTitle() != null)
+            productDTO.setTitle(product.getTitle());
+        if (product.getDescription() != null)
+            productDTO.setDescription(product.getDescription());
+        if (product.getPrice() != null)
+            productDTO.setPrice(product.getPrice());
+        if (product.getPictureUrl() != null)
+            productDTO.setPictureUrl(product.getPictureUrl());
+        //TODO optimize this way of saving data to database------
+        productDTO = productRepo.save(new ProductItem(productDTO.getTitle(), productDTO.getDescription(), productDTO.getPrice(), productDTO.getPictureUrl()));
+        //TODO---------------------------------------------------
+        if (productDTO.getId() != null)
+            return new ResponseEntity<>(productDTO, HttpStatus.CREATED);
+
+        throw new ResourceNotFoundException("Could not create object");
     }
 
     @PostMapping("/post/products")
     public ResponseEntity<List<ProductItem>> createProducts(@RequestBody List<ProductItem> products) {
-        try {
-            List<ProductItem> results = productRepo.saveAllAndFlush(products);
-            return new ResponseEntity<>(results, HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        List<ProductItem> results = new ArrayList<>();
+        if (products != null && !products.isEmpty()) {
+            for (ProductItem prod : products) {
+                if (prod.getId() != null)
+                    prod.setId(null);
+                if (prod.getTitle() != null && prod.getDescription() != null && prod.getPrice() != null && prod.getPictureUrl() != null)
+                 results.add(prod);
+            }
+            if (!results.isEmpty())
+                return new ResponseEntity<>(productRepo.saveAll(results), HttpStatus.CREATED);
         }
+
+        throw new ResourceNotFoundException("List of products is empty");
     }
 
     @PutMapping("/put/product/{id}")
-    public ResponseEntity<ProductItem> updateProduct(@PathVariable("id") long id, @RequestBody ProductItem product) {
-        Optional<ProductItem> optProduct = productRepo.findById(id);
-        if (optProduct.isPresent()) {
-            ProductItem resultProduct = optProduct.get();
-            resultProduct.setTitle(product.getTitle());
-            resultProduct.setDescription(product.getDescription());
-            resultProduct.setPrice(product.getPrice());
-            resultProduct.setPictureUrl(product.getPictureUrl());
-            return new ResponseEntity<>(productRepo.save(resultProduct), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<ProductItem> updateProduct(@PathVariable("id") Long id, @RequestBody ProductItem product) {
+        ProductItem result;
+        if (id != null && id > 0L) {
+             result = productRepo.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Resource with id: " + id + " could not be found"));
+            if (result != null && result.getId() != null && result.getId().equals(id) && result.getTitle().equalsIgnoreCase(product.getTitle()))
+                return new ResponseEntity<>(productRepo.save(result), HttpStatus.OK);
         }
+        throw new ResourceNotFoundException("Resources not provided");
     }
 
     @DeleteMapping("/delete/product/{id}")
-    public ResponseEntity<HttpStatus> deleteProduct(@PathVariable("id") long id) {
-        try {
+    public ResponseEntity<HttpStatus> deleteProduct(@PathVariable("id") Long id) {
+        if (id != null && id > 0L && productRepo.findById(id).isPresent()) {
             productRepo.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new ResourceNotFoundException("Resources removed");
         }
+
+        throw new ResourceNotFoundException("Resources already removed or missing");
     }
 
     @DeleteMapping("/delete/products")
