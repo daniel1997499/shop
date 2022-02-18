@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 @Entity
 @Table(name = "orders")
@@ -150,5 +151,18 @@ public class OrderItem implements Serializable {
                 ", comment='" + comment + '\'' +
                 ", created=" + created +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        OrderItem orderItem = (OrderItem) o;
+        return id.equals(orderItem.id) && Objects.equals(name, orderItem.name) && Objects.equals(address, orderItem.address) && Objects.equals(phone, orderItem.phone) && Objects.equals(email, orderItem.email) && Objects.equals(item, orderItem.item) && Objects.equals(count, orderItem.count) && Objects.equals(comment, orderItem.comment) && status == orderItem.status && Objects.equals(created, orderItem.created);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, address, phone, email, item, count, comment, status, created);
     }
 }

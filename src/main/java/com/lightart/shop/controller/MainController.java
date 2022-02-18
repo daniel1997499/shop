@@ -1,8 +1,7 @@
 package com.lightart.shop.controller;
 
-import com.lightart.shop.error.ResourceNotFoundException;
+import com.lightart.shop.exception.ResourceNotFoundException;
 import com.lightart.shop.model.ProductItem;
-import com.lightart.shop.repository.OrderRepository;
 import com.lightart.shop.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,8 +16,6 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class MainController {
 
-    @Autowired
-    OrderRepository orderRepo;
     @Autowired
     ProductRepository productRepo;
 
@@ -42,8 +39,18 @@ public class MainController {
     @GetMapping("/get/product/{id}")
     public ResponseEntity<ProductItem> getProductById(@PathVariable("id") long paramId) {
         ProductItem product = productRepo.findById(paramId)
-                .orElseThrow(() -> new ResourceNotFoundException("Not found Product with id = " + paramId));
+                .orElseThrow(() -> new ResourceNotFoundException(paramId));
         return new ResponseEntity<>(product, HttpStatus.OK);
+    }
+
+    @GetMapping("/get/exception")
+    public ResponseEntity<Exception> getException() throws Exception {
+        throw new Exception("Yep, this is an exception kinda");
+    }
+
+    @GetMapping("/get/resourcenotfoundexception")
+    public ResponseEntity<ResourceNotFoundException> getError() throws Exception {
+        throw new ResourceNotFoundException("Yep, this is a resourcenotfoundexception kinda");
     }
 
     @PostMapping("/post/product")

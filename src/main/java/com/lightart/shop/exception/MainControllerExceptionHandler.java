@@ -1,4 +1,4 @@
-package com.lightart.shop.error;
+package com.lightart.shop.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +10,8 @@ import java.util.Date;
 
 @ControllerAdvice
 public class MainControllerExceptionHandler {
+
+    //TODO define some other exception types here
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorMessage> resourceNotFoundException(ResourceNotFoundException ex, WebRequest request) {
@@ -27,6 +29,6 @@ public class MainControllerExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 new Date(),
                 ex.getMessage(),
-                request.getDescription(false)), HttpStatus.INTERNAL_SERVER_ERROR);
+                request.getDescription(true)), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

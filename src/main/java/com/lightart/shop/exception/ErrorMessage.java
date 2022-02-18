@@ -1,4 +1,4 @@
-package com.lightart.shop.error;
+package com.lightart.shop.exception;
 
 import java.util.Date;
 

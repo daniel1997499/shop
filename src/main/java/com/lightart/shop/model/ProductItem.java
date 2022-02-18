@@ -3,6 +3,7 @@ package com.lightart.shop.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Table(name = "products")
@@ -83,5 +84,18 @@ public class ProductItem implements Serializable {
                 ", price=" + price +
                 ", pictureUrl='" + pictureUrl + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProductItem that = (ProductItem) o;
+        return id.equals(that.id) && Objects.equals(title, that.title) && Objects.equals(description, that.description) && Objects.equals(price, that.price) && Objects.equals(pictureUrl, that.pictureUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, price, pictureUrl);
     }
 }
