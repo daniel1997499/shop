@@ -37,6 +37,12 @@
 			<scope>runtime</scope>
 		</dependency>
 		<!--end-->
+		<!--Logging with actuator-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<!--end-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

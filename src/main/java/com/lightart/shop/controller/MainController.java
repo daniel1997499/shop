@@ -2,8 +2,9 @@ package com.lightart.shop.controller;
 
 import com.lightart.shop.exception.ResourceNotFoundException;
 import com.lightart.shop.model.ProductItem;
-import com.lightart.shop.repository.ProductRepository;
+import com.lightart.shop.repository.ProductItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ import java.util.Optional;
 public class MainController {
 
     @Autowired
-    ProductRepository productRepo;
+    ProductItemRepository productRepo;
 
     @GetMapping("/get/products")
     public ResponseEntity<List<ProductItem>> getAllProductItems(@RequestParam(required = false) String title) {
